@@ -9,7 +9,7 @@ import ch.deletescape.lawnchair.dragndrop.DragLayer;
 import ch.deletescape.lawnchair.dynamicui.ExtractedColors;
 
 public class Settings implements SharedPreferences.OnSharedPreferenceChangeListener {
-    private static final String KEY_PREF_LIGHT_STATUS_BAR = "pref_lightStatusBar";
+    private static final String KEY_PREF_LIGHT_STATUS_BAR = "pref_forceLightStatusBar";
     private static final String KEY_PREF_PINCH_TO_OVERVIEW = "pref_pinchToOverview";
     private static final String KEY_PREF_PULLDOWN_SEARCH = "pref_pulldownSearch";
     private static final String KEY_PREF_HOTSEAT_EXTRACTED_COLORS = "pref_hotseatShouldUseExtractedColors";
@@ -39,6 +39,7 @@ public class Settings implements SharedPreferences.OnSharedPreferenceChangeListe
     private static final String KEY_PREF_ENABLE_BACKPORT_SHORTCUTS = "pref_enableBackportShortcuts";
     private static final String KEY_PREF_SHOW_TOP_SHADOW = "pref_showTopShadow";
     private static final String KEY_PREF_THEME = "pref_theme";
+    private static final String KEY_PREF_HIDE_HOTSEAT = "pref_hideHotseat";
     private static Settings instance;
     private Launcher mLauncher;
 
@@ -67,7 +68,7 @@ public class Settings implements SharedPreferences.OnSharedPreferenceChangeListe
             LauncherAppState las = LauncherAppState.getInstance();
             switch (key) {
                 case KEY_PREF_LIGHT_STATUS_BAR:
-                    mLauncher.activateLightStatusBar(false);
+                    mLauncher.getAllAppsController().updateLightStatusBar(mLauncher);
                     break;
                 case KEY_PREF_PINCH_TO_OVERVIEW:
                     DragLayer dragLayer = mLauncher.getDragLayer();
@@ -124,6 +125,7 @@ public class Settings implements SharedPreferences.OnSharedPreferenceChangeListe
                 case KEY_PREF_TRANSPARENT_HOTSEAT:
                 case KEY_PREF_ROUND_SEARCH_BAR:
                 case KEY_SHOW_PIXEL_BAR:
+                case KEY_PREF_HIDE_HOTSEAT:
                     mLauncher.scheduleRecreate();
                     break;
                 case KEY_PREF_ENABLE_BACKPORT_SHORTCUTS:

@@ -127,7 +127,6 @@ import ch.deletescape.lawnchair.util.Thunk;
 import ch.deletescape.lawnchair.util.ViewOnDrawExecutor;
 import ch.deletescape.lawnchair.widget.PendingAddWidgetInfo;
 import ch.deletescape.lawnchair.widget.WidgetHostViewLoader;
-import ch.deletescape.lawnchair.widget.WidgetsBottomSheet;
 import ch.deletescape.lawnchair.widget.WidgetsContainerView;
 
 import com.microsoft.azure.mobile.MobileCenter;
@@ -488,12 +487,9 @@ public class Launcher extends Activity
      * @param activate if true, make sure the status bar is light, otherwise base on wallpaper.
      */
     public void activateLightStatusBar(boolean activate) {
-        boolean lightStatusBar = activate || (FeatureFlags.lightStatusBar(getApplicationContext())
-                && mExtractedColors.getColor(ExtractedColors.STATUS_BAR_INDEX,
-                ExtractedColors.DEFAULT_DARK) == ExtractedColors.DEFAULT_LIGHT);
         int oldSystemUiFlags = getWindow().getDecorView().getSystemUiVisibility();
         int newSystemUiFlags = oldSystemUiFlags;
-        if (lightStatusBar) {
+        if (activate) {
             newSystemUiFlags |= View.SYSTEM_UI_FLAG_LIGHT_STATUS_BAR;
         } else {
             newSystemUiFlags &= ~(View.SYSTEM_UI_FLAG_LIGHT_STATUS_BAR);
@@ -2410,7 +2406,7 @@ public class Launcher extends Activity
                 StrictMode.setVmPolicy(new StrictMode.VmPolicy.Builder().detectAll()
                         .penaltyLog().build());
 
-                if (info instanceof ShortcutInfo && ((ShortcutInfo) info).useNativeShortcut) {
+                if (info instanceof ShortcutInfo && ((ShortcutInfo) info).useDeepShortcutManager) {
                     String id = ((ShortcutInfo) info).getDeepShortcutId();
                     String packageName = intent.getPackage();
                     DeepShortcutManager.getInstance(this).startShortcut(
